@@ -10,3 +10,5 @@ INSERT INTO user_roles(user_id, role_id) VALUES ('1','1');
 --Un admin / pass: 12345678
 INSERT INTO users(username,email,password) VALUES ('admin1','admin@gmail.com','$2a$10$1dCKuQoQqbBNCK.Rb8XQSemwqdHdVAcCTb1kUQLg2key/4VX./TvS');
 INSERT INTO user_roles(user_id, role_id) VALUES ('1','3');
+
+--Un trainer / pass: 12345678
