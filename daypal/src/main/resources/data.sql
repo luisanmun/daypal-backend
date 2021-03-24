@@ -12,3 +12,7 @@ INSERT INTO users(username,email,password) VALUES ('admin1','admin@gmail.com','$
 INSERT INTO user_roles(user_id, role_id) VALUES ('1','3');
 
 --Un trainer / pass: 12345678
+
+
+--Comidas test
+INSERT INTO meals(title, description, calories, category) VALUES ('Tortilla francesa','Solo de un huevo y elavorar con una gota de aceite.', 104, 'dinner');
