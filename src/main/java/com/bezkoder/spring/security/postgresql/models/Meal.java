@@ -43,6 +43,12 @@ public class Meal {
 		this.category = category;
 	}
 	
+	public Meal () {
+		this.title = "";
+		this.description = "";
+		this.calories = 0;
+		this.category = EMeal.LUNCH;
+	}
 	//--------------------------------------
 
 	public Integer getId() {

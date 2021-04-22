@@ -1,5 +1,6 @@
 package com.bezkoder.spring.security.postgresql.controllers;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +29,10 @@ public class MealController {
 	private MealService mealService;
 	
 	//pasarle todos los meals que existan
-	@GetMapping(value = "/meals/all")
+	@GetMapping(value = "/meals")
 	@PreAuthorize("hasRole('ADMIN')")
-	public String getMeals(Model model) {
-		Iterable<Meal> meals = this.mealService.findAll();
-		model.addAttribute("meals", meals);
-		return "Todas las comidas en el sistema";
+	public List<Meal> getMeals() {
+		List<Meal> meals = (List<Meal>) this.mealService.findAll();
+		return meals;
 	}
 }
