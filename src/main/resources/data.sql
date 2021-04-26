@@ -16,3 +16,8 @@ INSERT INTO user_roles(user_id, role_id) VALUES ('2','3');
 
 --Comidas test
 INSERT INTO meals(title, description, calories, category) VALUES ('Tortilla francesa','Solo de un huevo y elavorar con una gota de aceite.', 104, 'DINNER');
+INSERT INTO meals(title, description, calories, category) VALUES ('Ensalada','Simplemente trocear los alimentos y aliñar con un poco de aceite.', 54, 'DINNER');
+
+--Ejercicios test
+INSERT INTO exercises(title, description, calories, lose_weight) VALUES ('Biceps curl','Hasta fallo.', 100, FALSE);
+INSERT INTO exercises(title, description, calories, lose_weight) VALUES ('Squat','Hasta fallo.', 200, TRUE);
