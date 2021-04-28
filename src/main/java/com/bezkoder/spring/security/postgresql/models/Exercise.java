@@ -6,7 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -26,11 +29,12 @@ public class Exercise {
 	@Size(max = 500)
 	private String description;
 
-	@Size(min = 0, max = 3000)
+	@Min(1)
+	@Max(5000)
 	private Integer calories;
 
 	@Column(name = "lose_weight")
-	@NotBlank
+	@NotNull
 	private boolean loseWeight;
 
 	// -------------------------------------------------
