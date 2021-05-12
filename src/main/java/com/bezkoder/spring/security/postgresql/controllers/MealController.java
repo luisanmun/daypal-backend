@@ -36,7 +36,7 @@ public class MealController {
 	}
 
 	// eliminar un meal
-	@DeleteMapping("/meals/delete/{id}")
+	@DeleteMapping("/meals/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<HttpStatus> deleteMeal(@PathVariable("id") long id) {
 		try {
@@ -48,8 +48,8 @@ public class MealController {
 	}
 	
 	//introducir un meal
-	@PostMapping("/meals/new")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PostMapping("/meals")
+	@PreAuthorize("hasRole('MODERATOR')")
 	public ResponseEntity<Meal> createMeal(@RequestBody Meal meal) {
 		try {
 			Meal newMeal = mealRepository.save(new Meal(meal.getTitle(), meal.getDescription(), meal.getCalories(), meal.getCategory()));

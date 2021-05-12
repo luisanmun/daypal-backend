@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -22,10 +23,12 @@ public class Meal {
 	private Long id;
 
 	@NotBlank
+	@Size(min=3)
 	@Size(max = 20)
 	private String title;
 	
 	@NotBlank
+	@Size(min=3)
 	@Size(max = 500)
 	private String description;
 	
@@ -33,6 +36,7 @@ public class Meal {
 	@Max(5000)
 	private Integer calories;
 	
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	@Column(length = 9)
 	private EMeal category;

@@ -35,7 +35,7 @@ public class ExerciseController {
 		return exercises;
 	}
 	
-	@DeleteMapping("/exercises/delete/{id}")
+	@DeleteMapping("/exercises/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<HttpStatus> deleteExercise(@PathVariable("id") long id) {
 		try {
@@ -46,8 +46,8 @@ public class ExerciseController {
 		}
 	}
 	
-	@PostMapping("/exercises/new")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PostMapping("/exercises")
+	@PreAuthorize("hasRole('MODERATOR')")
 	public ResponseEntity<Exercise> createExercise(@RequestBody Exercise exercise) {
 		try {
 			Exercise newExercise = exerciseRepository.save(new Exercise(exercise.getTitle(), exercise.getDescription(), exercise.getCalories(), exercise.getLoseWeight()));
