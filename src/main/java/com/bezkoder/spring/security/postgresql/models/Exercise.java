@@ -31,27 +31,22 @@ public class Exercise {
 	@Size(max = 500)
 	private String description;
 
-	@Min(1)
-	@Max(5000)
-	private Integer calories;
-
 	@Column(name = "lose_weight")
 	@NotNull
+	//true es ejercicio para bajar de peso, false para subir de peso
 	private boolean loseWeight;
 
 	// -------------------------------------------------
 
-	public Exercise(String title, String description, Integer calories, Boolean loseWeight) {
+	public Exercise(String title, String description, Boolean loseWeight) {
 		this.title = title;
 		this.description = description;
-		this.calories = calories;
 		this.loseWeight = loseWeight;
 	}
 
 	public Exercise() {
 		this.title = "";
 		this.description = "";
-		this.calories = 0;
 		this.loseWeight = false;
 	}
 
@@ -79,14 +74,6 @@ public class Exercise {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public Integer getCalories() {
-		return calories;
-	}
-
-	public void setCalories(Integer calories) {
-		this.calories = calories;
 	}
 
 	public Boolean getLoseWeight() {

@@ -50,7 +50,7 @@ public class ExerciseController {
 	@PreAuthorize("hasRole('MODERATOR')")
 	public ResponseEntity<Exercise> createExercise(@RequestBody Exercise exercise) {
 		try {
-			Exercise newExercise = exerciseRepository.save(new Exercise(exercise.getTitle(), exercise.getDescription(), exercise.getCalories(), exercise.getLoseWeight()));
+			Exercise newExercise = exerciseRepository.save(new Exercise(exercise.getTitle(), exercise.getDescription(), exercise.getLoseWeight()));
 			return new ResponseEntity<>(newExercise, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

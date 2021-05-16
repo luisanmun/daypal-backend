@@ -243,5 +243,44 @@ public class User {
 		this.signUpDate = signUpDate;
 	}
 	
+	//Aux
+	//calculadora de calorias a consumir en un dia
+	public Double caloriesTarget() {
+		Double res = 0.0;
+		Double baseMetaMale = (10*this.getWeight()) + (6.25*this.getHeight()) - (5*42.5) + 5;
+		Double baseMetaFemale = (10*this.getWeight()) + (6.25*this.getHeight()) - (5*42.5) - 161;
+		
+		if(this.getSex().equals(false)) {
+			res = baseMetaFemale;
+		}else {
+			res = baseMetaMale;
+		}
+		
+		return res;
+	}
+	//calculadora peso ideal a patir del IMC
+	public Integer idealWeight() {
+		
+		Integer res = null;
+		//peso en kg altura en metros
+		Double h = this.getHeight()/100.0;
+		Double IMC = this.getWeight() / Math.pow(h, 2);
+		
+		//-1 si estas en bajo peso
+		if(IMC < 18.5) {
+			res = -1;
+		}
+		//0 si estas normal, osea peso ideal
+		if(IMC >= 18.5 && IMC < 25) {
+			res = 0;
+		}
+		//1 si estas en sobrepeso
+		if(IMC >= 25) {
+			res = 1;
+		}
+		return res;
+		
+	}
+	
 	
 }

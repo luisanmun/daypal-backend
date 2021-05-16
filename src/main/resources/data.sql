@@ -20,5 +20,5 @@ INSERT INTO meals(title, description, calories, category) VALUES ('Tortilla fran
 INSERT INTO meals(title, description, calories, category) VALUES ('Ensalada','Simplemente trocear los alimentos y aliñar con un poco de aceite.', 54, 'DINNER');
 
 --Ejercicios test
-INSERT INTO exercises(title, description, calories, lose_weight) VALUES ('Biceps curl','Hasta fallo.', 100, FALSE);
-INSERT INTO exercises(title, description, calories, lose_weight) VALUES ('Squat','Hasta fallo.', 200, TRUE);
+INSERT INTO exercises(title, description, lose_weight) VALUES ('Biceps curl','Hasta fallo.', FALSE);
+INSERT INTO exercises(title, description, lose_weight) VALUES ('Squat','Hasta fallo.', TRUE);
