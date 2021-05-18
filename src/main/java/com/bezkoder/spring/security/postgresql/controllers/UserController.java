@@ -3,6 +3,8 @@ package com.bezkoder.spring.security.postgresql.controllers;
 import java.time.LocalTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bezkoder.spring.security.postgresql.models.Exercise;
@@ -89,12 +92,25 @@ public class UserController {
 //	}
 
 	// funcion que refresca elejercicio de ese dia
-	@PutMapping(value = "/user/{id}/weight/{newWeight}")
+//	@PatchMapping(value = "/user/{id}/weight")
+//	@PreAuthorize("hasRole('USER')")
+//	public void patchWeight(@RequestBody int weight, @PathVariable("id") final int id) {
+//		Long userId = Long.valueOf(id);
+//		User currentUser = userRepository.findById(userId).get();
+//		userService.patchWeight(weight, currentUser);
+//	}
+	
+	@PatchMapping(value = "/user/{id}/weight")
 	@PreAuthorize("hasRole('USER')")
-	public void updateWeight( @PathVariable("newWeight") final int newWeight, @PathVariable("id") final int id) {
+	public ResponseEntity<Integer> patchWeight(@RequestBody int weight, @PathVariable("id") final int id) {
 		Long userId = Long.valueOf(id);
-		User currentUser = userRepository.findById(userId).get();
-		userService.updateWeight(newWeight, currentUser);
+		User currentUser = userRepository.findById(userId).get();	
+		try {
+			userService.patchWeight(weight, currentUser);
+			return new ResponseEntity<>(null, HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 }

@@ -182,7 +182,7 @@ public class UserService {
 	
 	//actualizar el peso del usuario
 	@Transactional
-	public void updateWeight(int newWeight, User u) {
-		u.setWeight(newWeight);
+	public void patchWeight(int weight, User u) {
+		u.setWeight(weight);
 	}
 }
