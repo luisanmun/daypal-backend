@@ -99,18 +99,36 @@ public class UserController {
 //		User currentUser = userRepository.findById(userId).get();
 //		userService.patchWeight(weight, currentUser);
 //	}
-	
+
 	@PatchMapping(value = "/user/{id}/weight")
 	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<Integer> patchWeight(@RequestBody int weight, @PathVariable("id") final int id) {
 		Long userId = Long.valueOf(id);
-		User currentUser = userRepository.findById(userId).get();	
+		User currentUser = userRepository.findById(userId).get();
 		try {
 			userService.patchWeight(weight, currentUser);
 			return new ResponseEntity<>(null, HttpStatus.ACCEPTED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+
+	// obtener el peso de un usuario
+	@GetMapping(value = "/user/{id}/weight")
+	@PreAuthorize("hasRole('USER')")
+	public Integer getWeight(@PathVariable("id") final int id) {
+		Long userId = Long.valueOf(id);
+		User currentUser = userRepository.findById(userId).get();
+		return currentUser.getWeight();
+	}
+
+	// obtener la altura de un usuario
+	@GetMapping(value = "/user/{id}/height")
+	@PreAuthorize("hasRole('USER')")
+	public Integer getHeight(@PathVariable("id") final int id) {
+		Long userId = Long.valueOf(id);
+		User currentUser = userRepository.findById(userId).get();
+		return currentUser.getHeight();
 	}
 
 }

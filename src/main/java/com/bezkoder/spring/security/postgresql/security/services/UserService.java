@@ -185,4 +185,16 @@ public class UserService {
 	public void patchWeight(int weight, User u) {
 		u.setWeight(weight);
 	}
+	
+//	// obtener el peso de un usuario
+//	@Transactional
+//	public Integer getWeight(User u) {
+//		return u.getWeight();
+//	}
+//	
+//	// obtener la altura de un usuario
+//	@Transactional
+//	public Integer getHeight(User u) {
+//		return u.getWeight();
+//	}
 }
