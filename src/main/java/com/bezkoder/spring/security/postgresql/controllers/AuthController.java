@@ -31,6 +31,7 @@ import com.bezkoder.spring.security.postgresql.repository.RoleRepository;
 import com.bezkoder.spring.security.postgresql.repository.UserRepository;
 import com.bezkoder.spring.security.postgresql.security.jwt.JwtUtils;
 import com.bezkoder.spring.security.postgresql.security.services.UserDetailsImpl;
+import com.bezkoder.spring.security.postgresql.security.services.UserService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -41,6 +42,9 @@ public class AuthController {
 
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	UserService userService;
 
 	@Autowired
 	RoleRepository roleRepository;
@@ -77,13 +81,13 @@ public class AuthController {
 		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
 			return ResponseEntity
 					.badRequest()
-					.body(new MessageResponse("Error: Username is already taken!"));
+					.body(new MessageResponse("Error: el nombre de usuario ya está en uso!"));
 		}
 
 		if (userRepository.existsByEmail(signUpRequest.getEmail())) {
 			return ResponseEntity
 					.badRequest()
-					.body(new MessageResponse("Error: Email is already in use!"));
+					.body(new MessageResponse("Error: el email está en uso!"));
 		}
 
 		// Create new user's account
@@ -96,26 +100,26 @@ public class AuthController {
 
 		if (strRoles == null) {
 			Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+					.orElseThrow(() -> new RuntimeException("Error: Role no se encontró."));
 			roles.add(userRole);
 		} else {
 			strRoles.forEach(role -> {
 				switch (role) {
 				case "admin":
 					Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+							.orElseThrow(() -> new RuntimeException("Error: Role no se encontró."));
 					roles.add(adminRole);
 
 					break;
 				case "mod":
 					Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
-							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+							.orElseThrow(() -> new RuntimeException("Error: Role no se encontró."));
 					roles.add(modRole);
 
 					break;
 				default:
 					Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+							.orElseThrow(() -> new RuntimeException("Error: Role no se encontró."));
 					roles.add(userRole);
 				}
 			});
@@ -123,7 +127,13 @@ public class AuthController {
 
 		user.setRoles(roles);
 		userRepository.save(user);
+		
+		//primera asociacion
+		if(userService.checkIfRoleUser(user)) {
+			userService.firstAssociation(user);
+			userRepository.save(user);
+		}
 
-		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+		return ResponseEntity.ok(new MessageResponse("Usuario registrado correctamente!"));
 	}
 }

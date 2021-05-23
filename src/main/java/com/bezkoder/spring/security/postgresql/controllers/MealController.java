@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bezkoder.spring.security.postgresql.models.EMeal;
 import com.bezkoder.spring.security.postgresql.models.Meal;
+import com.bezkoder.spring.security.postgresql.models.User;
 import com.bezkoder.spring.security.postgresql.repository.MealRepository;
+import com.bezkoder.spring.security.postgresql.repository.UserRepository;
 import com.bezkoder.spring.security.postgresql.security.services.MealService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -26,6 +29,9 @@ public class MealController {
 	private MealService mealService;
 	@Autowired
 	private MealRepository mealRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 
 	// pasarle todos los meals que existan
 	@GetMapping(value = "/meals")
@@ -40,22 +46,53 @@ public class MealController {
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<HttpStatus> deleteMeal(@PathVariable("id") long id) {
 		try {
-			mealRepository.deleteById(id);
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			EMeal mealCategory = mealRepository.findById(id).get().getCategory();
+			
+			if (mealCategory.equals(EMeal.BREAKFAST)) {
+				mealService.deleteBreakfast(id);
+			}
+
+			if (mealCategory.equals(EMeal.LUNCH)) {
+				mealService.deleteLunch(id);
+			}
+
+			if (mealCategory.equals(EMeal.SNACK)) {
+				mealService.deleteSnack(id);
+			}
+
+			if (mealCategory.equals(EMeal.DINNER)) {
+				mealService.deleteDinner(id);
+			}
+
+			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
-	//introducir un meal
+
+	// introducir un meal
 	@PostMapping("/meals")
 	@PreAuthorize("hasRole('MODERATOR')")
 	public ResponseEntity<Meal> createMeal(@RequestBody Meal meal) {
 		try {
-			Meal newMeal = mealRepository.save(new Meal(meal.getTitle(), meal.getDescription(), meal.getCalories(), meal.getCategory()));
+			Meal newMeal = mealRepository
+					.save(new Meal(meal.getTitle(), meal.getDescription(), meal.getCalories(), meal.getCategory()));
 			return new ResponseEntity<>(newMeal, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	//test para ver que la bd hace actualizacion bien BORRAR
+//	@GetMapping("/meals/test")
+//	@PreAuthorize("hasRole('ADMIN')")
+//	public void test() {
+//		Long userId = Long.valueOf(1);
+//		User currentUser = userRepository.findById(userId).get();
+//		Meal defaultDinner = mealRepository.findById(4L).get();
+//		currentUser.setDinner(defaultDinner);
+//		System.out.println(currentUser.getDinner());
+//		userRepository.save(currentUser);
+//		
+//	}
 }

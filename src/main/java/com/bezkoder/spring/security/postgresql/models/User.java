@@ -57,37 +57,39 @@ public class User {
 	//female->false, male->true
 	private Boolean sex;
 	
-	@OneToOne(cascade = {CascadeType.ALL})
+	@OneToOne(cascade =  CascadeType.ALL)
 	@Valid
-	@JoinColumn(name = "breakfast_id")
+	@JoinColumn(name = "breakfast_id", referencedColumnName = "id")
 	private Meal breakfast;
 	
-	@OneToOne(cascade = {CascadeType.ALL})
+	@OneToOne(cascade =  CascadeType.ALL)
 	@Valid
-	@JoinColumn(name = "lunch_id")
+	@JoinColumn(name = "lunch_id", referencedColumnName = "id")
 	private Meal lunch;
 	
-	@OneToOne(cascade = {CascadeType.ALL})
+	@OneToOne(cascade =  CascadeType.ALL)
 	@Valid
-	@JoinColumn(name = "snack_id")
+	@JoinColumn(name = "snack_id", referencedColumnName = "id")
 	private Meal snack;
 	
-	@OneToOne(cascade = {CascadeType.ALL})
+	@OneToOne(cascade =  CascadeType.ALL)
 	@Valid
-	@JoinColumn(name = "dinner_id")
+	@JoinColumn(name = "dinner_id", referencedColumnName = "id")
 	private Meal dinner;
 	
 	private Long mealsCounter;
 	
-	@OneToOne(cascade = {CascadeType.ALL})
+	@OneToOne(cascade =  CascadeType.ALL)
 	@Valid
-	@JoinColumn(name = "exercise_id")
+	@JoinColumn(name = "exercise_id", referencedColumnName =  "id")
 	private Exercise exercise;
 	
 	private Long exercisesCounter;
 	
 	private LocalDate signUpDate;
+	
 	// -------------------------------------------------
+	
 	public User() {
 	}
 
@@ -107,9 +109,21 @@ public class User {
 		this.exercisesCounter = 0L;
 		this.signUpDate = LocalDate.now();
 		
-		if(this.getRoles().contains(ERole.ROLE_USER)) {
-			//llamada a funcion asignadora
-		}
+		//como se esta creando no tiene los roles asignados aqui todavia
+		//y la llamada afuera tampoco le podre pasar el id porque al no estar en bd en null todavia
+		System.out.println(this.getId());
+		
+//		Set<String> rolesString = new HashSet<String>();
+//		for(Role ro : this.getRoles()) {
+//		rolesString.add(ro.getName().toString());
+//		}
+//		
+//		System.out.println(rolesString);
+		
+		//esto no es asi
+//		if(this.getRoles().contains(ERole.ROLE_USER)) {
+//			//llamada a funcion asignadora
+//		}
 	}
 
 	// -------------------------------------------------

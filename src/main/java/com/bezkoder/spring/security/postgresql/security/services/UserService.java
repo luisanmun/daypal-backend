@@ -6,28 +6,44 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.bezkoder.spring.security.postgresql.models.EMeal;
 import com.bezkoder.spring.security.postgresql.models.Exercise;
 import com.bezkoder.spring.security.postgresql.models.Meal;
+import com.bezkoder.spring.security.postgresql.models.Role;
 import com.bezkoder.spring.security.postgresql.models.User;
 import com.bezkoder.spring.security.postgresql.repository.ExerciseRepository;
+import com.bezkoder.spring.security.postgresql.repository.MealRepository;
 import com.bezkoder.spring.security.postgresql.repository.UserRepository;
 
 @Service
 public class UserService {
-	
+
+	@Autowired
+	private MealRepository mealRepository;
+
 	@Autowired
 	MealService mealService;
-	
+
+	@Autowired
+	private ExerciseRepository exerciseRepository;
+
 	@Autowired
 	ExerciseService exerciseService;
+
+	@Autowired
+	private UserRepository userRepository;
 
 	@Transactional
 	public Meal getMealNow(User u) {
@@ -83,18 +99,27 @@ public class UserService {
 	public void breakfastAssigner(User u) {
 		List<Meal> meals = new ArrayList<Meal>();
 		meals.addAll(mealService.findAll());
-		//hago aleatorio el orden para que luego al recorrer sea aleatoria la asignacion
+		// hago aleatorio el orden para que luego al recorrer sea aleatoria la
+		// asignacion
 		Collections.shuffle(meals);
-		
+
 		Double objective = 25 * u.caloriesTarget() / 100;
-		
-		for(Meal m: meals) {
-			if(m.getCategory().equals(EMeal.BREAKFAST) && (m.getCalories()>=objective-50 && m.getCalories()<=objective+50)) {
-				u.setBreakfast(m);
-				break;
+
+		// caso para el usuario recien creado que no tenia ninguna comida previa, es
+		// decir esta a null y no se puede quedar con la anterior porque era null
+		if (u.getBreakfast() == null) {
+			Meal defaultBreakfast = mealRepository.findById(1L).get();
+			u.setBreakfast(defaultBreakfast);
+		} else {
+			for (Meal m : meals) {
+				if (!u.getBreakfast().equals(m) && m.getId() != 1L && m.getCategory().equals(EMeal.BREAKFAST)
+						&& (m.getCalories() >= objective - 50 && m.getCalories() <= objective + 50)) {
+					u.setBreakfast(m);
+					break;
+				}
 			}
 		}
-		
+		userRepository.save(u);
 	}
 
 	// asignador de almuerzos (40% calorias)
@@ -102,18 +127,27 @@ public class UserService {
 	public void lunchAssigner(User u) {
 		List<Meal> meals = new ArrayList<Meal>();
 		meals.addAll(mealService.findAll());
-		//hago aleatorio el orden para que luego al recorrer sea aleatoria la asignacion
+		// hago aleatorio el orden para que luego al recorrer sea aleatoria la
+		// asignacion
 		Collections.shuffle(meals);
-		
+
 		Double objective = 40 * u.caloriesTarget() / 100;
-		
-		for(Meal m: meals) {
-			if(m.getCategory().equals(EMeal.BREAKFAST) && (m.getCalories()>=objective-50 && m.getCalories()<=objective+50)) {
-				u.setBreakfast(m);
-				break;
+
+		// caso para el usuario recien creado que no tenia ninguna comida previa, es
+		// decir esta a null y no se puede quedar con la anterior porque era null
+		if (u.getLunch() == null) {
+			Meal defaultLunch = mealRepository.findById(2L).get();
+			u.setLunch(defaultLunch);
+		} else {
+			for (Meal m : meals) {
+				if (!u.getLunch().equals(m) && m.getId() != 2L && m.getCategory().equals(EMeal.LUNCH)
+						&& (m.getCalories() >= objective - 50 && m.getCalories() <= objective + 50)) {
+					u.setLunch(m);
+					break;
+				}
 			}
 		}
-
+		userRepository.save(u);
 	}
 
 	// asignador de meriendas (20% calorias)
@@ -121,18 +155,27 @@ public class UserService {
 	public void snackAssigner(User u) {
 		List<Meal> meals = new ArrayList<Meal>();
 		meals.addAll(mealService.findAll());
-		//hago aleatorio el orden para que luego al recorrer sea aleatoria la asignacion
+		// hago aleatorio el orden para que luego al recorrer sea aleatoria la
+		// asignacion
 		Collections.shuffle(meals);
-		
+
 		Double objective = 20 * u.caloriesTarget() / 100;
-		
-		for(Meal m: meals) {
-			if(m.getCategory().equals(EMeal.BREAKFAST) && (m.getCalories()>=objective-50 && m.getCalories()<=objective+50)) {
-				u.setBreakfast(m);
-				break;
+
+		// caso para el usuario recien creado que no tenia ninguna comida previa, es
+		// decir esta a null y no se puede quedar con la anterior porque era null
+		if (u.getSnack() == null) {
+			Meal defaultSnack = mealRepository.findById(3L).get();
+			u.setSnack(defaultSnack);
+		} else {
+			for (Meal m : meals) {
+				if (!u.getSnack().equals(m) && m.getId() != 3L && m.getCategory().equals(EMeal.SNACK)
+						&& (m.getCalories() >= objective - 50 && m.getCalories() <= objective + 50)) {
+					u.setSnack(m);
+					break;
+				}
 			}
 		}
-
+		userRepository.save(u);
 	}
 
 	// asignador de cenas (15% calorias)
@@ -140,52 +183,70 @@ public class UserService {
 	public void dinnerAssigner(User u) {
 		List<Meal> meals = new ArrayList<Meal>();
 		meals.addAll(mealService.findAll());
-		//hago aleatorio el orden para que luego al recorrer sea aleatoria la asignacion
+		// hago aleatorio el orden para que luego al recorrer sea aleatoria la
+		// asignacion
 		Collections.shuffle(meals);
-		
+
 		Double objective = 15 * u.caloriesTarget() / 100;
-		
-		for(Meal m: meals) {
-			if(m.getCategory().equals(EMeal.BREAKFAST) && (m.getCalories()>=objective-50 && m.getCalories()<=objective+50)) {
-				u.setBreakfast(m);
-				break;
+
+		// caso para el usuario recien creado que no tenia ninguna comida previa, es
+		// decir esta a null y no se puede quedar con la anterior porque era null
+		if (u.getDinner() == null) {
+			Meal defaultDinner = mealRepository.findById(4L).get();
+			u.setDinner(defaultDinner);
+		} else {
+			for (Meal m : meals) {
+				if (!u.getDinner().equals(m) && m.getId() != 4L && m.getCategory().equals(EMeal.DINNER)
+						&& (m.getCalories() >= objective - 50 && m.getCalories() <= objective + 50)) {
+					u.setDinner(m);
+					break;
+				}
 			}
 		}
-
+		userRepository.save(u);
 	}
 
 	// asignador ejercicio cada nuevo dia
-	//si el peso esta por encima del ideal pongo ejercicio de perder
+	// si el peso esta por encima del ideal pongo ejercicio de perder
 	@Transactional
 	public void exerciseAssigner(User u) {
 		List<Exercise> exercises = new ArrayList<Exercise>();
 		exercises.addAll(exerciseService.findAll());
-		//hago aleatorio el orden para que luego al recorrer sea aleatoria la asignacion
+		// hago aleatorio el orden para que luego al recorrer sea aleatoria la
+		// asignacion
 		Collections.shuffle(exercises);
-				
-		for(Exercise e: exercises) {
-			//te pongo ejercicio para subir de peso
-			if(u.idealWeight()==-1 && e.getLoseWeight().equals(true)) {
-				u.setExercise(e);
-				break;
-			//no importa el tipo de ejercicio
-			}else if(u.idealWeight()==0 ) {
-				u.setExercise(e);
-				break;
-			//te pongo ejercicio para baja de peso
-			}else if(u.idealWeight()==1 && e.getLoseWeight().equals(false)) {
-				u.setExercise(e);
-				break;
+
+		if (u.getExercise() == null) {
+			Exercise defaultExercise = exerciseRepository.findById(1L).get();
+			u.setExercise(defaultExercise);
+		} else {
+			for (Exercise e : exercises) {
+				if (!u.getExercise().equals(e) && e.getId() != 1L) {
+					// te pongo ejercicio para subir de peso
+					if (u.idealWeight() == -1 && e.getLoseWeight().equals(true)) {
+						u.setExercise(e);
+						break;
+						// no importa el tipo de ejercicio
+					} else if (u.idealWeight() == 0) {
+						u.setExercise(e);
+						break;
+						// te pongo ejercicio para baja de peso
+					} else if (u.idealWeight() == 1 && e.getLoseWeight().equals(false)) {
+						u.setExercise(e);
+						break;
+					}
+				}
 			}
 		}
+		userRepository.save(u);
 	}
-	
-	//actualizar el peso del usuario
+
+	// actualizar el peso del usuario
 	@Transactional
 	public void patchWeight(int weight, User u) {
 		u.setWeight(weight);
 	}
-	
+
 //	// obtener el peso de un usuario
 //	@Transactional
 //	public Integer getWeight(User u) {
@@ -197,4 +258,28 @@ public class UserService {
 //	public Integer getHeight(User u) {
 //		return u.getWeight();
 //	}
+
+	// check de si un usuario es rol User, ya que se usa mucho y la comprobacion no
+	// es obvia
+	public Boolean checkIfRoleUser(User u) {
+		Boolean res = false;
+		Set<String> rolesString = new HashSet<String>();
+		for (Role ro : u.getRoles()) {
+			rolesString.add(ro.getName().toString());
+		}
+		if (rolesString.contains("ROLE_USER")) {
+			res = true;
+		}
+		return res;
+	}
+
+	// funcion que asocia las propiedades de un usuario recien registrado
+	public void firstAssociation(User u) {
+		this.breakfastAssigner(u);
+		this.lunchAssigner(u);
+		this.snackAssigner(u);
+		this.dinnerAssigner(u);
+		this.exerciseAssigner(u);
+
+	}
 }
