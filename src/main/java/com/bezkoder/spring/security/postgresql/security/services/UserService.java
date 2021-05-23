@@ -69,11 +69,13 @@ public class UserService {
 	@Transactional
 	public void mealsCounterUp(User u) {
 		u.setMealsCounter(u.getMealsCounter() + 1);
+		userRepository.save(u);
 	}
 
 	@Transactional
 	public void exercisesCounterUp(User u) {
 		u.setExercisesCounter(u.getExercisesCounter() + 1);
+		userRepository.save(u);
 	}
 
 	// devolver puntuacion global del usuario
@@ -245,19 +247,8 @@ public class UserService {
 	@Transactional
 	public void patchWeight(int weight, User u) {
 		u.setWeight(weight);
+		userRepository.save(u);
 	}
-
-//	// obtener el peso de un usuario
-//	@Transactional
-//	public Integer getWeight(User u) {
-//		return u.getWeight();
-//	}
-//	
-//	// obtener la altura de un usuario
-//	@Transactional
-//	public Integer getHeight(User u) {
-//		return u.getWeight();
-//	}
 
 	// check de si un usuario es rol User, ya que se usa mucho y la comprobacion no
 	// es obvia

@@ -23,7 +23,7 @@ public class Exercise {
 
 	@NotBlank
 	@Size(min=3)
-	@Size(max = 20)
+	@Size(max = 40)
 	private String title;
 
 	@NotBlank

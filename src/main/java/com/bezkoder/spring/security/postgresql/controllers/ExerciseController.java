@@ -22,9 +22,9 @@ import com.bezkoder.spring.security.postgresql.security.services.ExerciseService
 @RestController
 public class ExerciseController {
 	
-	
 	@Autowired
 	private ExerciseService exerciseService;
+	
 	@Autowired
 	private ExerciseRepository exerciseRepository;
 	
@@ -39,8 +39,8 @@ public class ExerciseController {
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<HttpStatus> deleteExercise(@PathVariable("id") long id) {
 		try {
-			exerciseRepository.deleteById(id);
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			exerciseService.deleteBreakfast(id);
+			return new ResponseEntity<>(HttpStatus.ACCEPTED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}

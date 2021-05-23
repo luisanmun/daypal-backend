@@ -27,11 +27,9 @@ public class MealController {
 
 	@Autowired
 	private MealService mealService;
-	@Autowired
-	private MealRepository mealRepository;
 	
 	@Autowired
-	private UserRepository userRepository;
+	private MealRepository mealRepository;
 
 	// pasarle todos los meals que existan
 	@GetMapping(value = "/meals")
@@ -47,7 +45,7 @@ public class MealController {
 	public ResponseEntity<HttpStatus> deleteMeal(@PathVariable("id") long id) {
 		try {
 			EMeal mealCategory = mealRepository.findById(id).get().getCategory();
-			
+
 			if (mealCategory.equals(EMeal.BREAKFAST)) {
 				mealService.deleteBreakfast(id);
 			}
@@ -64,7 +62,7 @@ public class MealController {
 				mealService.deleteDinner(id);
 			}
 
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.ACCEPTED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -82,8 +80,8 @@ public class MealController {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
-	//test para ver que la bd hace actualizacion bien BORRAR
+
+	// test para ver que la bd hace actualizacion bien BORRAR
 //	@GetMapping("/meals/test")
 //	@PreAuthorize("hasRole('ADMIN')")
 //	public void test() {
