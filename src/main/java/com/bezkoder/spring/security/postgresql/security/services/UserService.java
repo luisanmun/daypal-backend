@@ -57,6 +57,8 @@ public class UserService {
 			res = u.getSnack();
 		} else if (time >= 22 && time < 23) {
 			res = u.getDinner();
+		}else {//opcion por defecto si se hiciera esta peticion, aunque se va a controlar desde frontend para que no se pueda hacer
+			res = u.getSnack();
 		}
 		return res;
 	}
