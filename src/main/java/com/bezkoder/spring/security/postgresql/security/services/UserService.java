@@ -136,6 +136,7 @@ public class UserService {
 		Collections.shuffle(meals);
 
 		Double objective = 40 * u.caloriesTarget() / 100;
+		System.out.println(objective);
 
 		// caso para el usuario recien creado que no tenia ninguna comida previa, es
 		// decir esta a null y no se puede quedar con la anterior porque era null
