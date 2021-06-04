@@ -71,12 +71,27 @@ public class UserService {
 	@Transactional
 	public void mealsCounterUp(User u) {
 		u.setMealsCounter(u.getMealsCounter() + 1);
+		//ademas de subir el marcador, actualizo la fecha en la que se actualizo
+		Integer time = LocalTime.now().getHour();
+		Integer currentDateSum = LocalDate.now().getDayOfMonth() + LocalDate.now().getMonthValue() + LocalDate.now().getYear();
+		System.out.println(currentDateSum);
+		if (time >= 10 && time < 11) {
+			u.setLastUpdatedBreakfastDate(currentDateSum);
+		} else if (time >= 14 && time < 15) {
+			u.setLastUpdatedLunchDate(currentDateSum);
+		} else if (time >= 18 && time < 19) {
+			u.setLastUpdatedSnackDate(currentDateSum);
+		} else if (time >= 22 && time < 23) {
+			u.setLastUpdatedDinnerDate(currentDateSum);
+		}
 		userRepository.save(u);
 	}
 
 	@Transactional
 	public void exercisesCounterUp(User u) {
 		u.setExercisesCounter(u.getExercisesCounter() + 1);
+		Integer currentDateSum = LocalDate.now().getDayOfMonth() + LocalDate.now().getMonthValue() + LocalDate.now().getYear();
+		u.setLastUpdatedExerciseDate(currentDateSum);
 		userRepository.save(u);
 	}
 

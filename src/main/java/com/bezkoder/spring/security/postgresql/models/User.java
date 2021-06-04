@@ -88,6 +88,16 @@ public class User {
 	
 	private LocalDate signUpDate;
 	
+	private Integer lastUpdatedBreakfastDate;
+	
+	private Integer lastUpdatedLunchDate;
+	
+	private Integer lastUpdatedSnackDate;
+	
+	private Integer lastUpdatedDinnerDate;
+	
+	private Integer lastUpdatedExerciseDate;
+	
 	// -------------------------------------------------
 	
 	public User() {
@@ -108,22 +118,11 @@ public class User {
 		this.exercise = null;
 		this.exercisesCounter = 0L;
 		this.signUpDate = LocalDate.now();
-		
-		//como se esta creando no tiene los roles asignados aqui todavia
-		//y la llamada afuera tampoco le podre pasar el id porque al no estar en bd en null todavia
-		System.out.println(this.getId());
-		
-//		Set<String> rolesString = new HashSet<String>();
-//		for(Role ro : this.getRoles()) {
-//		rolesString.add(ro.getName().toString());
-//		}
-//		
-//		System.out.println(rolesString);
-		
-		//esto no es asi
-//		if(this.getRoles().contains(ERole.ROLE_USER)) {
-//			//llamada a funcion asignadora
-//		}
+		this.lastUpdatedBreakfastDate = 0;
+		this.lastUpdatedLunchDate = 0;
+		this.lastUpdatedSnackDate = 0;
+		this.lastUpdatedDinnerDate = 0;
+		this.lastUpdatedExerciseDate = 0;
 	}
 
 	// -------------------------------------------------
@@ -257,6 +256,47 @@ public class User {
 		this.signUpDate = signUpDate;
 	}
 	
+	
+	public Integer getLastUpdatedBreakfastDate() {
+		return lastUpdatedBreakfastDate;
+	}
+
+	public void setLastUpdatedBreakfastDate(Integer lastUpdatedBreakfastDate) {
+		this.lastUpdatedBreakfastDate = lastUpdatedBreakfastDate;
+	}
+
+	public Integer getLastUpdatedLunchDate() {
+		return lastUpdatedLunchDate;
+	}
+
+	public void setLastUpdatedLunchDate(Integer lastUpdatedLunchDate) {
+		this.lastUpdatedLunchDate = lastUpdatedLunchDate;
+	}
+
+	public Integer getLastUpdatedSnackDate() {
+		return lastUpdatedSnackDate;
+	}
+
+	public void setLastUpdatedSnackDate(Integer lastUpdatedSnackDate) {
+		this.lastUpdatedSnackDate = lastUpdatedSnackDate;
+	}
+
+	public Integer getLastUpdatedDinnerDate() {
+		return lastUpdatedDinnerDate;
+	}
+
+	public void setLastUpdatedDinnerDate(Integer lastUpdatedDinnerDate) {
+		this.lastUpdatedDinnerDate = lastUpdatedDinnerDate;
+	}
+
+	public Integer getLastUpdatedExerciseDate() {
+		return lastUpdatedExerciseDate;
+	}
+
+	public void setLastUpdatedExerciseDate(Integer lastUpdatedExerciseDate) {
+		this.lastUpdatedExerciseDate = lastUpdatedExerciseDate;
+	}
+
 	//Aux
 	//calculadora de calorias a consumir en un dia
 	public Double caloriesTarget() {
