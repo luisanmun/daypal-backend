@@ -18,6 +18,7 @@ INSERT INTO meals(title, description, calories, category) VALUES ('Merienda por 
 INSERT INTO meals(title, description, calories, category) VALUES ('Cena por defecto', 'Cena saludable para todos los publicos. Comer 100 gr de merluza a la plancha', 93, 'DINNER');
 INSERT INTO meals(title, description, calories, category) VALUES ('Tortilla francesa','Solo de un huevo y elavorar con una gota de aceite.', 104, 'DINNER');
 INSERT INTO meals(title, description, calories, category) VALUES ('Ensalada','Simplemente trocear los alimentos y aliñar con un poco de aceite.', 54, 'DINNER');
+INSERT INTO meals(title, description, calories, category) VALUES ('Test','Test', 792, 'LUNCH');
 
 --Ejercicios test
 INSERT INTO exercises(title, description, lose_weight) VALUES ('Ejercicio por defecto','Dar un paseo de una hora, preferiblemente por un parque.', FALSE);

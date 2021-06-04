@@ -74,7 +74,6 @@ public class UserService {
 		//ademas de subir el marcador, actualizo la fecha en la que se actualizo
 		Integer time = LocalTime.now().getHour();
 		Integer currentDateSum = LocalDate.now().getDayOfMonth() + LocalDate.now().getMonthValue() + LocalDate.now().getYear();
-		System.out.println(currentDateSum);
 		if (time >= 10 && time < 11) {
 			u.setLastUpdatedBreakfastDate(currentDateSum);
 		} else if (time >= 14 && time < 15) {

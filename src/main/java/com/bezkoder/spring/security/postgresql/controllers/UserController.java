@@ -1,5 +1,6 @@
 package com.bezkoder.spring.security.postgresql.controllers;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -68,7 +69,7 @@ public class UserController {
 	public void exercisesCounterUp(@PathVariable("id") final int id) {
 		Long userId = Long.valueOf(id);
 		User currentUser = userRepository.findById(userId).get();
-		userService.mealsCounterUp(currentUser);
+		userService.exercisesCounterUp(currentUser);
 	}
 
 	// obtener la puntacion de un usuario
@@ -139,53 +140,105 @@ public class UserController {
 		return currentUser.getHeight();
 	}
 
-	// obtener la fecha de la ultima actualizacion al desayuno en formato Integer
-	// sumado
-	@GetMapping(value = "/user/{id}/lastUpdatedBreakfastDate")
+	// me dice si puedo confirmar la comida que toque en ese momento
+	@GetMapping(value = "/user/{id}/canConfirmMeal")
 	@PreAuthorize("hasRole('USER')")
-	public Integer getLastUpdatedBreakfastDate(@PathVariable("id") final int id) {
+	public boolean getCanConfirmMeal(@PathVariable("id") final int id) {
 		Long userId = Long.valueOf(id);
 		User currentUser = userRepository.findById(userId).get();
-		return currentUser.getLastUpdatedBreakfastDate();
-	}
+		
+		Integer currentDateSum = LocalDate.now().getDayOfMonth() + LocalDate.now().getMonthValue() + LocalDate.now().getYear();
 
-	// obtener la fecha de la ultima actualizacion al almuerzo en formato Integer
-	// sumado
-	@GetMapping(value = "/user/{id}/lastUpdatedLunchDate")
-	@PreAuthorize("hasRole('USER')")
-	public Integer getLastUpdatedLunchDate(@PathVariable("id") final int id) {
-		Long userId = Long.valueOf(id);
-		User currentUser = userRepository.findById(userId).get();
-		return currentUser.getLastUpdatedLunchDate();
+		boolean res = false;
+		
+		Integer time = LocalTime.now().getHour();
+		
+		if (time >= 10 && time < 11) {
+			res = currentDateSum > currentUser.getLastUpdatedBreakfastDate();
+		} else if (time >= 14 && time < 15) {
+			res = currentDateSum > currentUser.getLastUpdatedLunchDate();
+		} else if (time >= 18 && time < 19) {
+			res = currentDateSum > currentUser.getLastUpdatedSnackDate();
+		} else if (time >= 22 && time < 23) {
+			res = currentDateSum > currentUser.getLastUpdatedDinnerDate();
+		}
+		
+		
+		return res;
 	}
-
-	// obtener la fecha de la ultima actualizacion a la merienda en formato Integer
-	// sumado
-	@GetMapping(value = "/user/{id}/lastUpdatedSnackDate")
-	@PreAuthorize("hasRole('USER')")
-	public Integer getLastUpdatedSnackDate(@PathVariable("id") final int id) {
-		Long userId = Long.valueOf(id);
-		User currentUser = userRepository.findById(userId).get();
-		return currentUser.getLastUpdatedSnackDate();
-	}
-
-	// obtener la fecha de la ultima actualizacion a la cena en formato Integer
-	// sumado
-	@GetMapping(value = "/user/{id}/lastUpdatedDinnerDate")
-	@PreAuthorize("hasRole('USER')")
-	public Integer getLastUpdatedDinnerDate(@PathVariable("id") final int id) {
-		Long userId = Long.valueOf(id);
-		User currentUser = userRepository.findById(userId).get();
-		return currentUser.getLastUpdatedDinnerDate();
-	}
-
-	// obtener la fecha de la ultima actualizacion al ejercicio en formato Integer
-	// sumado
-	@GetMapping(value = "/user/{id}/lastUpdatedExerciseDate")
-	@PreAuthorize("hasRole('USER')")
-	public Integer getLastUpdatedExerciseDate(@PathVariable("id") final int id) {
-		Long userId = Long.valueOf(id);
-		User currentUser = userRepository.findById(userId).get();
-		return currentUser.getLastUpdatedExerciseDate();
-	}
+	
+	// me dice si puedo confirmar el ejercicio
+		@GetMapping(value = "/user/{id}/canConfirmExercise")
+		@PreAuthorize("hasRole('USER')")
+		public boolean getCanConfirmExercise(@PathVariable("id") final int id) {
+			Long userId = Long.valueOf(id);
+			User currentUser = userRepository.findById(userId).get();
+			
+			Integer currentDateSum = LocalDate.now().getDayOfMonth() + LocalDate.now().getMonthValue() + LocalDate.now().getYear();
+					
+			return currentDateSum > currentUser.getLastUpdatedExerciseDate();
+		}
+	
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+//		
+//	
+//	
+//	// obtener la fecha de la ultima actualizacion al desayuno en formato Integer
+//	// sumado
+//	@GetMapping(value = "/user/{id}/lastUpdatedBreakfastDate")
+//	@PreAuthorize("hasRole('USER')")
+//	public Integer getLastUpdatedBreakfastDate(@PathVariable("id") final int id) {
+//		Long userId = Long.valueOf(id);
+//		User currentUser = userRepository.findById(userId).get();
+//		return currentUser.getLastUpdatedBreakfastDate();
+//	}
+//
+//	// obtener la fecha de la ultima actualizacion al almuerzo en formato Integer
+//	// sumado
+//	@GetMapping(value = "/user/{id}/lastUpdatedLunchDate")
+//	@PreAuthorize("hasRole('USER')")
+//	public Integer getLastUpdatedLunchDate(@PathVariable("id") final int id) {
+//		Long userId = Long.valueOf(id);
+//		User currentUser = userRepository.findById(userId).get();
+//		return currentUser.getLastUpdatedLunchDate();
+//	}
+//
+//	// obtener la fecha de la ultima actualizacion a la merienda en formato Integer
+//	// sumado
+//	@GetMapping(value = "/user/{id}/lastUpdatedSnackDate")
+//	@PreAuthorize("hasRole('USER')")
+//	public Integer getLastUpdatedSnackDate(@PathVariable("id") final int id) {
+//		Long userId = Long.valueOf(id);
+//		User currentUser = userRepository.findById(userId).get();
+//		return currentUser.getLastUpdatedSnackDate();
+//	}
+//
+//	// obtener la fecha de la ultima actualizacion a la cena en formato Integer
+//	// sumado
+//	@GetMapping(value = "/user/{id}/lastUpdatedDinnerDate")
+//	@PreAuthorize("hasRole('USER')")
+//	public Integer getLastUpdatedDinnerDate(@PathVariable("id") final int id) {
+//		Long userId = Long.valueOf(id);
+//		User currentUser = userRepository.findById(userId).get();
+//		return currentUser.getLastUpdatedDinnerDate();
+//	}
+//
+//	// obtener la fecha de la ultima actualizacion al ejercicio en formato Integer
+//	// sumado
+//	@GetMapping(value = "/user/{id}/lastUpdatedExerciseDate")
+//	@PreAuthorize("hasRole('USER')")
+//	public Integer getLastUpdatedExerciseDate(@PathVariable("id") final int id) {
+//		Long userId = Long.valueOf(id);
+//		User currentUser = userRepository.findById(userId).get();
+//		return currentUser.getLastUpdatedExerciseDate();
+//	}
 }
