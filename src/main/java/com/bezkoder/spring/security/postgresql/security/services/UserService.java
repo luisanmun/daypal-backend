@@ -100,9 +100,12 @@ public class UserService {
 
 		Long mealScore = u.getMealsCounter();
 		Long exerciseScore = u.getExercisesCounter();
-		Long daysSinceRegistration = ChronoUnit.DAYS.between(u.getSignUpDate(), LocalDate.now());
+		Long daysSinceRegistration = ChronoUnit.DAYS.between(u.getSignUpDate(), LocalDate.now()) + 1;
+		System.out.println(daysSinceRegistration);
 
-		Long idealScore = daysSinceRegistration * mealScore + daysSinceRegistration * exerciseScore;
+		//Long idealScore = daysSinceRegistration * mealScore + daysSinceRegistration * exerciseScore;
+		Long idealScore = 5 * daysSinceRegistration; //forma mas simple ya que por dia lo maximo que puedo sumar es 5 puntos
+		
 		Long actualScore = mealScore + exerciseScore;
 
 		Double tmp = (actualScore.doubleValue() * 100) / idealScore.doubleValue();
