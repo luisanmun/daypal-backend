@@ -31,7 +31,7 @@ public class ExerciseService {
 	}
 	
 	@Transactional
-	public void deleteBreakfast(long id) {
+	public void deleteExercise(long id) {
 		//Proteccion para que no se elimine de la bd el desayuno por defecto
 		if(id != 1L) {
 			Exercise exerciseToDelete = exerciseRepository.findById(id).get();

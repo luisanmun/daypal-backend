@@ -39,7 +39,7 @@ public class ExerciseController {
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<HttpStatus> deleteExercise(@PathVariable("id") long id) {
 		try {
-			exerciseService.deleteBreakfast(id);
+			exerciseService.deleteExercise(id);
 			return new ResponseEntity<>(HttpStatus.ACCEPTED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

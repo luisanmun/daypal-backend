@@ -80,17 +80,4 @@ public class MealController {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-
-	// test para ver que la bd hace actualizacion bien BORRAR
-//	@GetMapping("/meals/test")
-//	@PreAuthorize("hasRole('ADMIN')")
-//	public void test() {
-//		Long userId = Long.valueOf(1);
-//		User currentUser = userRepository.findById(userId).get();
-//		Meal defaultDinner = mealRepository.findById(4L).get();
-//		currentUser.setDinner(defaultDinner);
-//		System.out.println(currentUser.getDinner());
-//		userRepository.save(currentUser);
-//		
-//	}
 }
