@@ -125,7 +125,7 @@ public class UserService {
 		Collections.shuffle(meals);
 
 		Double objective = 25 * u.caloriesTarget() / 100;
-		System.out.println("El objetivo desayuno es: " + objective );
+		System.out.println("El objetivo breakfast es: " + objective );
 
 		// caso para el usuario recien creado que no tenia ninguna comida previa, es
 		// decir esta a null y no se puede quedar con la anterior porque era null
@@ -154,7 +154,7 @@ public class UserService {
 		Collections.shuffle(meals);
 
 		Double objective = 40 * u.caloriesTarget() / 100;
-		System.out.println("el obj de lounch es" + objective);
+		System.out.println("el obj de lunch es: " + objective);
 
 		// caso para el usuario recien creado que no tenia ninguna comida previa, es
 		// decir esta a null y no se puede quedar con la anterior porque era null
@@ -271,6 +271,21 @@ public class UserService {
 	public void patchWeight(int weight, User u) {
 		u.setWeight(weight);
 		userRepository.save(u);
+		//pongo todas las comidas y ejercicio por defecto de nuevo
+		Meal defaultBreakfast = mealRepository.findById(1L).get();
+		u.setBreakfast(defaultBreakfast);
+		
+		Meal defaultLunch = mealRepository.findById(2L).get();
+		u.setLunch(defaultLunch);
+		
+		Meal defaultSnack = mealRepository.findById(3L).get();
+		u.setSnack(defaultSnack);
+		
+		Meal defaultDinner = mealRepository.findById(4L).get();
+		u.setDinner(defaultDinner);
+		
+		Exercise defaultExercise = exerciseRepository.findById(1L).get();
+		u.setExercise(defaultExercise);
 	}
 
 	// check de si un usuario es rol User, ya que se usa mucho y la comprobacion no
